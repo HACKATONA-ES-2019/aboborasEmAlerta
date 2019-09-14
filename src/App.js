@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 // screens
 import { LoginScreen } from './screens/Login';
 import DisasterScreen from './screens/Disasters/Disasters';
+import DefenseHome from './screens/DefenseHome/DefenseHome';
 import { NotFoundScreen } from './screens/NotFound';
 
 import {connect} from 'react-redux';
