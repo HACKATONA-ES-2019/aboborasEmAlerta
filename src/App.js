@@ -6,6 +6,7 @@ import { LoginScreen } from './screens/Login';
 import DisasterScreen from './screens/Disasters/Disasters';
 import { NotFoundScreen } from './screens/NotFound';
 
+import  RegisterDisaster  from './screens/RegisterDisaster';
 import {connect} from 'react-redux';
 
 import {updateDisasters} from './store/actions'
@@ -26,6 +27,7 @@ class App extends React.Component {
   render() {
     return (
       <Switch>
+        <Route path="/" exact component={RegisterDisaster} />
         <Route path="/" exact component={LoginScreen} />
         <Route path="/desastres" exact component={DisasterScreen} />
         <Route path="*" exact component={NotFoundScreen} />
