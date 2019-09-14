@@ -1,25 +1,26 @@
 import React from 'react';
 import { Typography } from 'antd';
-
-import {connect} from 'react-redux';
 import DisasterItem from './DisasterItem';
+
+import { connect } from 'react-redux';
 const { Title } = Typography;
 
 class Disasters extends React.Component {
   render() {
-    console.log(this.props.disasters)
+    console.log(this.props.disasters);
     return (
-      <div style={{display: 'flex'}}>
+      <div style={{ display: 'flex' }}>
         <Title level={2}>Desastres</Title>
-        {/* {this.state.disasters.map(d => <DisasterItem {...d} />)} */}
+        {this.props.disasters.map(d => (
+          <DisasterItem {...d} />
+        ))}
       </div>
     );
   }
 }
 
-
 const mapStateToProps = state => ({
-  disasters: state.disasters
-})
+  disasters: state.disasters.disasters,
+});
 
-export default connect(mapStateToProps)(Disasters)
+export default connect(mapStateToProps)(Disasters);
