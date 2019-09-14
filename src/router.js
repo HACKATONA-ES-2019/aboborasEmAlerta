@@ -3,11 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 
 // screens
 import { LoginScreen } from './screens/Login';
+import { RegisterDisaster } from './screens/RegisterDisaster';
 import { NotFoundScreen } from './screens/NotFound';
 
 const Router = () => (
   <Switch>
-    <Route path="/" exact component={LoginScreen} />
+    <Route path="/" exact component={RegisterDisaster} />
     <Route path="*" exact component={NotFoundScreen} />
   </Switch>
 );
