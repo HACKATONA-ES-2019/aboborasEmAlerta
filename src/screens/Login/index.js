@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Styles from './styles';
+import { requestNotificationPermission } from '../../helpers';
 import { Form, Icon, Input, Button, Typography } from 'antd';
-const { Title, Paragraph, Text } = Typography;
+import { messaging } from '../../lib/firebase';
+const { Title } = Typography;
 
 
 
 export const LoginScreen = () => {
+
+  useEffect(() => {
+    requestNotificationPermission();
+
+    messaging.onMessage((msg) => {
+      alert(`Mensagem Recebida: ${msg}`);
+    });
+  }, []);
+
   return (
     <Styles.Wrapper>
       <Title>Entre</Title>
