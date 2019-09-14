@@ -7,7 +7,7 @@ import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 import * as serviceWorker from './serviceWorker';
-import Router from './router';
+import App from './App';
 import rootReducer from './store/reducers';
 
 // Estilos
@@ -24,7 +24,7 @@ const store = createStore(rootReducer, enhancer);
 render(
   <Provider store={store}>
     <BrowserRouter>
-      <Router />
+      <App />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

@@ -13,11 +13,16 @@ import {firestore} from './lib/firebase'
 
 class App extends React.Component {
   componentDidMount() {
-    firestore.collection('disasters').onSnapshot(disasters => {
+    this.listenDisasters()
+  }
 
+  listenDisasters(){
+    firestore.collection('disasters').onSnapshot(disasters => {
       this.props.updateDisasters(disasters.docs.map(d => d.data()))
     });
   }
+
+  
   render() {
     return (
       <Switch>
