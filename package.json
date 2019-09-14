@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "google-maps-react": "^2.0.2",
     "antd": "^3.23.2",
     "firebase": "^6.6.1",
     "react": "^16.9.0",
