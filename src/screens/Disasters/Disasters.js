@@ -1,9 +1,8 @@
 import React from 'react';
-import { Typography, Button, PageHeader } from 'antd';
+import { Button, PageHeader } from 'antd';
 import DisasterItem from './DisasterItem/DisasterItem';
 
 import { connect } from 'react-redux';
-const { Title } = Typography;
 
 class Disasters extends React.Component {
   render() {
