@@ -11,7 +11,7 @@ const columns = [
   {
     title: 'Data',
     dataIndex: 'creationDate',
-    render: v => v ? dayjs(v.toDate()).format('DD-MM-YYYY HH:mm:ss') : null,
+    render: v => (v ? dayjs(v.toDate()).format('DD-MM-YYYY HH:mm:ss') : null),
   },
   {
     title: 'Categoria',
@@ -39,7 +39,20 @@ class Disasters extends React.Component {
           ]}
         />
         <div style={{ margin: 20 }}>
-          <Table dataSource={this.props.disasters} columns={columns} />;
+          <Table
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: event => {}, // click row
+                onDoubleClick: event => {}, // double click row
+                onContextMenu: event => {}, // right button click row
+                onMouseEnter: event => {}, // mouse enter row
+                onMouseLeave: event => {}, // mouse leave row
+              };
+            }}
+            dataSource={this.props.disasters}
+            columns={columns}
+          />
+          ;
         </div>
       </div>
     );
