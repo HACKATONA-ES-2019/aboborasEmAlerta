@@ -8,9 +8,11 @@ import { withRouter } from 'react-router-dom';
 import Firebase, { firestore } from '../../lib/firebase';
 import { getDistanceFromLatLonInKm } from '../../helpers';
 import config from '../../lib/config';
+import Constants from '../../lib/constants'
 
 const { Option } = Select;
 const { TextArea } = Input;
+
 
 const RegisterDisaster = ({ history }) => {
   const [radius, setRadius] = useState(5);
@@ -90,7 +92,7 @@ const RegisterDisaster = ({ history }) => {
       },
     });
 
-    firestore
+    await firestore
       .collection('users')
       .get()
       .then(querySnapshot => {
@@ -137,7 +139,7 @@ const RegisterDisaster = ({ history }) => {
         });
       });
 
-    // history.push('/desastres');
+    history.push('/desastres');
   };
 
   return (
@@ -174,9 +176,7 @@ const RegisterDisaster = ({ history }) => {
                       setDisasterType(value);
                     }}
                   >
-                    <Option value="fire">Incendio</Option>
-                    <Option value="landslide">Deslizamento de Terra</Option>
-                    <Option value="inundation">Enchente</Option>
+                    {Object.entries(Constants.disasterTypes).map(([key, value]) => <Option value={key}>{value}</Option>)}
                   </Select>
                 </div>
                 <div style={styles.field}>
