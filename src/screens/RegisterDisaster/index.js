@@ -18,10 +18,19 @@ const RegisterDisaster = ({ history }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
 
   const addUserToDisaster = async (disasterId, userData) => {
-    const disaster = (await firestore
+    const disaster = await (await firestore
       .collection('disasters')
       .doc(disasterId)
       .get()).data();
+
+    const test = {
+      [userData.id]: {
+        cpf: userData.cpf,
+        name: userData.name,
+        situation: 'hit',
+      },
+    };
+    console.log(test);
 
     await firestore
       .collection('disasters')
@@ -56,9 +65,14 @@ const RegisterDisaster = ({ history }) => {
       .collection('users')
       .get()
       .then(querySnapshot => {
-        querySnapshot.forEach(user => {
-          const userData = { ...user.data(), id: user.id };
-          if (userData.latitude && userData.longitude) {
+        querySnapshot.forEach(async user => {
+          const userData = user.data();
+          if (
+            userData.latitude &&
+            userData.longitude &&
+            userData.name &&
+            userData.cpf
+          ) {
             const distanceFromDisaster = getDistanceFromLatLonInKm(
               userData.latitude,
               userData.longitude,
@@ -70,6 +84,10 @@ const RegisterDisaster = ({ history }) => {
               console.log(
                 `Usuário a ${distanceFromDisaster}km de distancia, sendo notificado`
               );
+              await addUserToDisaster(disaster.id, {
+                ...userData,
+                id: user.id,
+              });
             }
           }
         });
