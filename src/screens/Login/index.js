@@ -36,6 +36,7 @@ const updateUserLocalization = async (userUid, { latitude, longitude }) => {
 };
 
 const LoginScreen = ({ userData, updateUserData, history }) => {
+  const [name, setName] = useState(undefined);
   const [cpf, setCpf] = useState(undefined);
   const [password, setPassword] = useState(undefined);
   const [loading, setLoading] = useState(false);
@@ -101,6 +102,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
         {
           notificationToken: token,
           cpf: cpf,
+          name: name,
         },
         { merge: true }
       );
@@ -110,9 +112,16 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
 
   return (
     <Styles.Wrapper>
-      <Title>Entre</Title>
+      <Title>Cadastre-se</Title>
       {loading && <Spin indicator={antIcon} />}
       <Form layout="vertical">
+        <Form.Item label="Nome">
+          <Input
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder="Nome"
+            onChange={event => setName(event.target.value)}
+          />
+        </Form.Item>
         <Form.Item label="CPF">
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -135,7 +144,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
             disabled={loading}
             onClick={handleClick}
           >
-            Entrar
+            Cadastre-se
           </Button>
         </Form.Item>
       </Form>

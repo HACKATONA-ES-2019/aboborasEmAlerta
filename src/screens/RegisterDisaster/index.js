@@ -6,6 +6,7 @@ import { Select, InputNumber, Row, Button, Input, Col } from 'antd';
 import Header from '../../components/Header';
 import { withRouter } from 'react-router-dom';
 import Firebase, { firestore } from '../../lib/firebase';
+import { getDistanceFromLatLonInKm } from '../../helpers';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -16,17 +17,65 @@ const RegisterDisaster = ({ history }) => {
   const [description, setDescription] = useState(undefined);
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
 
-  const onSave = () => {
-    firestore.collection('disasters').add({
+  const addUserToDisaster = async (disasterId, userData) => {
+    const disaster = (await firestore
+      .collection('disasters')
+      .doc(disasterId)
+      .get()).data();
+
+    await firestore
+      .collection('disasters')
+      .doc(disasterId)
+      .set(
+        {
+          people: {
+            ...disaster.people,
+            [userData.id]: {
+              cpf: userData.cpf,
+              name: userData.name,
+              situation: 'hit',
+            },
+          },
+        },
+        { merge: true }
+      );
+  };
+
+  const onSave = async () => {
+    const disaster = await firestore.collection('disasters').add({
       description: description,
       category: disasterType,
       creationDate: Firebase.firestore.FieldValue.serverTimestamp(),
       coords: {
         ...coords,
-        radius
-      }
+        radius,
+      },
     });
-    history.push('/desastres');
+
+    firestore
+      .collection('users')
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(user => {
+          const userData = { ...user.data(), id: user.id };
+          if (userData.latitude && userData.longitude) {
+            const distanceFromDisaster = getDistanceFromLatLonInKm(
+              userData.latitude,
+              userData.longitude,
+              coords.latitude,
+              coords.longitude
+            );
+
+            if (distanceFromDisaster <= radius) {
+              console.log(
+                `Usuário a ${distanceFromDisaster}km de distancia, sendo notificado`
+              );
+            }
+          }
+        });
+      });
+
+    // history.push('/desastres');
   };
 
   return (
@@ -100,7 +149,11 @@ const RegisterDisaster = ({ history }) => {
                 </div>
                 <div style={styles.field}>
                   <Row>
-                    <Button onClick={onSave} type="primary">
+                    <Button
+                      onClick={onSave}
+                      disabled={!coords.longitude && !coords.latitude}
+                      type="primary"
+                    >
                       Confirmar
                     </Button>
                   </Row>

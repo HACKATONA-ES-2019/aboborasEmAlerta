@@ -35,8 +35,8 @@ class Map extends Component {
 
   updateLocation = place => {
     this.props.updateLocalization({
-      lat: place[0].geometry.location.lat(),
-      lng: place[0].geometry.location.lng(),
+      latitude: place[0].geometry.location.lat(),
+      longitude: place[0].geometry.location.lng(),
     });
     this.setState({
       ...this.state,
