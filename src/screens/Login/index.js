@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import * as Styles from './styles';
 import { requestNotificationPermission, getCurrentPosition } from '../../helpers';
 import { Form, Icon, Input, Button, Typography } from 'antd';
+import { withUser } from '../../containers'
 import { messaging, firestore, auth } from '../../lib/firebase';
 const { Title } = Typography;
 
-export const LoginScreen = () => {
+const LoginScreen = () => {
   const [cpf, setCpf] = useState(undefined);
   const [password, setPassword] = useState(undefined);
 
@@ -19,14 +20,14 @@ export const LoginScreen = () => {
 
     try {
       const token = await requestNotificationPermission();
-      const userLocation = await getCurrentPosition();
-      console.log(userLocation)
-  
+      // const userLocation = await getCurrentPosition();
+
       if (token) {
         auth
           .signInWithEmailAndPassword(`${cpf}@aboborasemalerta.com`, password)
           .then(data => {
             updateNotificationToken(data.user.uid, token);
+            // updateUserLocalization(data.user.uid)
           })
           .catch(err => {
             if (err.code === 'auth/wrong-password') {
@@ -66,6 +67,18 @@ export const LoginScreen = () => {
       );
   };
 
+  const updateUserLocalization = async (userUid, localization) => {
+    firestore
+      .collection('users')
+      .doc(userUid)
+      .set(
+        {
+          localization
+        },
+        { merge: true }
+      );
+  }
+
   return (
     <Styles.Wrapper>
       <Title>Entre</Title>
@@ -94,3 +107,5 @@ export const LoginScreen = () => {
     </Styles.Wrapper>
   );
 };
+
+export default withUser(LoginScreen);
