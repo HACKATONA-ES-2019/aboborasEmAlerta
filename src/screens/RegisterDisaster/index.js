@@ -10,7 +10,7 @@ import Firebase, { firestore } from '../../lib/firebase';
 const { Option } = Select;
 const { TextArea } = Input;
 
-const RegisterDisaster = history => {
+const RegisterDisaster = ({ history }) => {
   const [radius, setRadius] = useState(5);
   const [disasterType, setDisasterType] = useState(undefined);
   const [description, setDescription] = useState(undefined);
@@ -21,7 +21,10 @@ const RegisterDisaster = history => {
       description: description,
       category: disasterType,
       creationDate: Firebase.firestore.FieldValue.serverTimestamp(),
-      coords,
+      coords: {
+        ...coords,
+        radius
+      }
     });
     history.push('/desastres');
   };
@@ -60,9 +63,9 @@ const RegisterDisaster = history => {
                       setDisasterType(value);
                     }}
                   >
-                    <Option value="incendio">Incendio</Option>
-                    <Option value="deslizamento">Deslizamento de Terra</Option>
-                    <Option value="enchente">Enchente</Option>
+                    <Option value="fire">Incendio</Option>
+                    <Option value="landslide">Deslizamento de Terra</Option>
+                    <Option value="inundation">Enchente</Option>
                   </Select>
                 </div>
                 <div style={styles.field}>
@@ -108,7 +111,11 @@ const RegisterDisaster = history => {
         </Col>
 
         <Col span={12}>
-          <GoogleMaps style={styleMap} localizationRadius={radius} updateLocalization={setCoords}/>
+          <GoogleMaps
+            style={styleMap}
+            localizationRadius={radius}
+            updateLocalization={setCoords}
+          />
         </Col>
       </Row>
     </div>
