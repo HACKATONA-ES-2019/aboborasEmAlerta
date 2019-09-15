@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import * as Styles from './styles';
 import { requestNotificationPermission } from '../../helpers';
-import { Form, Icon, Input, Button, Typography } from 'antd';
+import { Form, Icon, Input, Button, Typography, Spin } from 'antd';
 import { withUser } from '../../containers';
 import { messaging, firestore, auth } from '../../lib/firebase';
 const { Title } = Typography;
@@ -38,6 +38,7 @@ const updateUserLocalization = async (userUid, { latitude, longitude }) => {
 const LoginScreen = ({ userData, updateUserData, history }) => {
   const [cpf, setCpf] = useState(undefined);
   const [password, setPassword] = useState(undefined);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     messaging.onMessage(msg => {
@@ -46,12 +47,13 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
   }, []);
 
   useEffect(() => {
-    if(Object.keys(userData).length > 0) {
+    if (Object.keys(userData).length > 0) {
       history.push('/seguro');
     }
   }, [userData]);
 
   const handleClick = async () => {
+    setLoading(true);
     try {
       const token = await requestNotificationPermission();
       if (token) {
@@ -61,6 +63,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
             updateNotificationToken(data.user.uid, token);
             updateUserData({ userUid: data.user.uid });
             startWatchPosition(data.user.uid);
+            setLoading(false);
           })
           .catch(err => {
             if (err.code === 'auth/wrong-password') {
@@ -82,7 +85,9 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
         password
       );
       updateNotificationToken(response.user.uid, token);
+      updateUserData({ userUid: response.user.uid });
       startWatchPosition(response.user.uid);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -101,9 +106,12 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
       );
   };
 
+  const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
   return (
     <Styles.Wrapper>
       <Title>Entre</Title>
+      {loading && <Spin indicator={antIcon} />}
       <Form layout="vertical">
         <Form.Item label="CPF">
           <Input
@@ -121,7 +129,12 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={handleClick}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={loading}
+            onClick={handleClick}
+          >
             Entrar
           </Button>
         </Form.Item>
