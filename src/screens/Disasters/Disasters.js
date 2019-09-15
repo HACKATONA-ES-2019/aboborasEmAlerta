@@ -4,13 +4,13 @@ import DisasterItem from './DisasterItem/DisasterItem';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Header from '../../components/Header';
 
 class Disasters extends React.Component {
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <PageHeader
-          style={{ boxShadow: '0 2px 8px #f0f1f2' }}
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Header
           extra={[
             <Link to="/desastres/criar">
               <Button key="1" type="primary">
@@ -18,9 +18,7 @@ class Disasters extends React.Component {
               </Button>
             </Link>,
           ]}
-          title="Desastres"
         />
-
         <div style={{ display: 'block' }}>
           {this.props.disasters.map(d => (
             <DisasterItem {...d} />
