@@ -1,11 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Styles from './styles';
+import { requestNotificationPermission, getCurrentPosition } from '../../helpers';
 import { Form, Icon, Input, Button, Typography } from 'antd';
-const { Title, Paragraph, Text } = Typography;
+import { withUser } from '../../containers'
+import { messaging, firestore, auth } from '../../lib/firebase';
+const { Title } = Typography;
 
+const LoginScreen = () => {
+  const [cpf, setCpf] = useState(undefined);
+  const [password, setPassword] = useState(undefined);
 
+  useEffect(() => {
+    messaging.onMessage(msg => {
+      alert(`Mensagem Recebida: ${msg}`);
+    });
+  }, []);
 
-export const LoginScreen = () => {
+  const handleClick = async () => {
+
+    try {
+      const token = await requestNotificationPermission();
+      // const userLocation = await getCurrentPosition();
+
+      if (token) {
+        auth
+          .signInWithEmailAndPassword(`${cpf}@aboborasemalerta.com`, password)
+          .then(data => {
+            updateNotificationToken(data.user.uid, token);
+            // updateUserLocalization(data.user.uid)
+          })
+          .catch(err => {
+            if (err.code === 'auth/wrong-password') {
+              alert('Senha inválida');
+            } else {
+              registerUser(token);
+            }
+          });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const registerUser = async token => {
+    try {
+      const response = auth.createUserWithEmailAndPassword(
+        `${cpf}@aboborasemalerta.com`,
+        password
+      );
+      updateNotificationToken(response.user.uid, token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateNotificationToken = async (userUid, token) => {
+    firestore
+      .collection('users')
+      .doc(userUid)
+      .set(
+        {
+          notificationToken: token,
+          cpf: cpf,
+        },
+        { merge: true }
+      );
+  };
+
+  const updateUserLocalization = async (userUid, localization) => {
+    firestore
+      .collection('users')
+      .doc(userUid)
+      .set(
+        {
+          localization
+        },
+        { merge: true }
+      );
+  }
+
   return (
     <Styles.Wrapper>
       <Title>Entre</Title>
@@ -14,6 +87,7 @@ export const LoginScreen = () => {
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="CPF"
+            onChange={event => setCpf(event.target.value)}
           />
         </Form.Item>
         <Form.Item label="Senha">
@@ -21,13 +95,11 @@ export const LoginScreen = () => {
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             type="password"
             placeholder="Senha"
+            onChange={event => setPassword(event.target.value)}
           />
         </Form.Item>
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-          >
+          <Button type="primary" htmlType="submit" onClick={handleClick}>
             Entrar
           </Button>
         </Form.Item>
@@ -35,3 +107,5 @@ export const LoginScreen = () => {
     </Styles.Wrapper>
   );
 };
+
+export default withUser(LoginScreen);
