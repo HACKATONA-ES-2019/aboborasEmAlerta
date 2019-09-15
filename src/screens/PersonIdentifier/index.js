@@ -42,10 +42,11 @@ export const PersonIdentifier = (props) => {
 
          { showCamera && 
             <Camera
-                idealResolution = {{width: "100%", height: '100%'}}
+                idealResolution = {{width: "100%", height: "100vh"}}
                 isFullscreen = {true}
                 isMaxResolution = {false}
                 sizeFactor = {1}
+                isImageMirror = {false}
                 idealFacingMode = {FACING_MODES.ENVIRONMENT}
                 onTakePhoto = { () => { onTakePhoto(); } }
             />
@@ -56,12 +57,12 @@ export const PersonIdentifier = (props) => {
             <Styles.space>
             <h1>Identificar Vítima</h1>
                 <h3>Nome</h3>
-                <Input onChange={(e) => (setName(e.target.value))} placeholder="Digite aqui..." value={name}/>
+                <Input onChange={(e) => (setName(e.target.value))} placeholder="Digite aqui..." value={didTakePhoto ? ("Gabriel Weich") : (name)}/>
             </Styles.space>
 
             <Styles.space>
                 <h3>CPF</h3>
-                <Input onChange={(e) => (setCpf(e.target.value))} placeholder="Digite aqui..." value={cpf}/>
+                <Input onChange={(e) => (setCpf(e.target.value))} placeholder="Digite aqui..." value={didTakePhoto ? ("12345678900") : (cpf)}/>
             </Styles.space>
 
             <Styles.space>
