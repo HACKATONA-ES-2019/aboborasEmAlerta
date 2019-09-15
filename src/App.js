@@ -16,7 +16,7 @@ import { PersonIdentifier } from './screens/PersonIdentifier';
 
 class App extends React.Component {
   componentDidMount() {
-    //this.listenDisasters()
+    this.listenDisasters()
   }
 
   listenDisasters(){

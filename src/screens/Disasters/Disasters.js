@@ -1,11 +1,10 @@
 import React from 'react';
 import { Button, PageHeader, Table } from 'antd';
-import DisasterItem from './DisasterItem/DisasterItem';
-
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import dayjs from 'dayjs';
+import Constants from '../../lib/constants'
 
 const columns = [
   {
@@ -15,7 +14,7 @@ const columns = [
   },
   {
     title: 'Categoria',
-    key: 'category',
+    render: v => Constants.disasterTypes[v],
     dataIndex: 'category',
   },
   {
@@ -25,8 +24,8 @@ const columns = [
   },
 ];
 class Disasters extends React.Component {
+
   render() {
-    console.log(this.props.disasters);
     return (
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Header
@@ -42,11 +41,7 @@ class Disasters extends React.Component {
           <Table
             onRow={(record, rowIndex) => {
               return {
-                onClick: event => {}, // click row
-                onDoubleClick: event => {}, // double click row
-                onContextMenu: event => {}, // right button click row
-                onMouseEnter: event => {}, // mouse enter row
-                onMouseLeave: event => {}, // mouse leave row
+                onClick: event => {this.props.history.push('desastresInfo', {record})},
               };
             }}
             dataSource={this.props.disasters}
@@ -62,5 +57,6 @@ class Disasters extends React.Component {
 const mapStateToProps = state => ({
   disasters: state.disasters.disasters,
 });
+
 
 export default connect(mapStateToProps)(Disasters);
