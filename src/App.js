@@ -1,26 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Switch } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          AlertaDesastre
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// screens
+import LoginScreen from './screens/Login';
+import SecureScreen from './screens/Secure';
+import DisasterScreen from './screens/Disasters/Disasters';
+import { NotFoundScreen } from './screens/NotFound';
+import DisasterInfo from "./screens/DisastersInfo/DisasterInfo";
+
+import  RegisterDisaster  from './screens/RegisterDisaster';
+import {connect} from 'react-redux';
+
+import {updateDisasters} from './store/actions'
+import {firestore} from './lib/firebase'
+import { PersonIdentifier } from './screens/PersonIdentifier';
+
+class App extends React.Component {
+  componentDidMount() {
+    this.listenDisasters()
+  }
+
+  listenDisasters(){
+    firestore.collection('disasters').onSnapshot(disasters => {
+      this.props.updateDisasters(disasters.docs.map(d => ({id: d.id, ...d.data()}) ))
+    });
+  }
+  
+  render() {
+    return (
+      <Switch>
+        <Route path="/" exact component={LoginScreen} />
+        <Route path="/personIdentifier" exact component={PersonIdentifier} />
+        <Route path="/registerDisaster" exact component={RegisterDisaster} />
+        <Route path="/" exact component={LoginScreen} />
+        <Route path="/seguro" exact component={SecureScreen} />
+        <Route path="/desastresInfo" exact component={DisasterInfo} />
+        <Route path="/desastres" exact component={DisasterScreen} />
+        <Route path="/desastres/criar" exact component={RegisterDisaster} />
+        <Route path="*" exact component={NotFoundScreen} />
+      </Switch>
+    );
+  }
 }
 
-export default App;
+
+
+export default connect(null, {updateDisasters})(App);
