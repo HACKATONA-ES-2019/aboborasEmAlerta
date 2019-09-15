@@ -12,11 +12,12 @@ const { Title } = Typography;
 
 const mountDisaster = (disaster) => {
   const situations = Object.keys(Constants.situations).reduce((acc, curr) => ({...acc, [curr]: 0}), {})
-  const peoble = disaster.peoble || []
+  const peoble = disaster.people || []
+  console.log({peoble})
   peoble.forEach(p => {
       situations[p.situation] = situations[p.situation] + 1
   })
-  return {...disaster, situations}
+  return {...disaster, situations: {...situations, hit: peoble.length}}
 }
 class DisasterInfo extends React.Component {
   state = {

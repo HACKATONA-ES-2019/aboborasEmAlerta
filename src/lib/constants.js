@@ -5,10 +5,10 @@ export default {
     landslide: 'Dasabamento'
   },
   situations: {
-    hits: 'Atingidos',
+    hit: 'Atingido',
     atRisk: 'Em risco',
-    injured: 'Feridos',
+    injured: 'Ferido',
     safe: 'Fora de risco',
-    deaths: 'Óbitos'
+    death: 'Óbito'
   }
 }
