@@ -10,21 +10,36 @@ import CustomTag from '../Tag';
 import Constants from '../../lib/constants';
 
 class InfoList extends React.Component {
+  state = {
+    tags: {
+      ...Object.entries(Constants.situations).reduce(
+        (acc, [key, value]) => ({ ...acc, [key]: false }),
+        {}
+      ),
+      hit: true,
+    },
+  };
+
+  onChangeTag = (key, checked) => {
+    this.setState(state => ({ tags: { ...state.tags, [key]: checked } }));
+  };
+
   render() {
-    console.log(this.props.disaster);
+    console.log(this.state.tags);
+    const peoble = this.state.tags.hit ? (this.props.disaster.people || []) : (this.props.disaster.people || []).filter(p => this.state.tags[p.situation])
     return (
       <InfiniteScroll pageStart={0} useWindow={false}>
         <List
           header={
             <div style={{ display: 'flex', overflowX: 'auto' }}>
               {Object.entries(Constants.situations).map(([key, value]) => (
-                <CustomTag>
+                <CustomTag checked={this.state.tags[key]} handleChange={(checked) => this.onChangeTag(key, checked)}>
                   {value} ({this.props.disaster.situations[key]})
                 </CustomTag>
               ))}
             </div>
           }
-          dataSource={this.props.disaster.people || []}
+          dataSource={peoble.sort((a, b) => a.name.localeCompare(b.name))}
           renderItem={item => (
             <List.Item key={item.name}>
               <List.Item.Meta
@@ -34,7 +49,13 @@ class InfoList extends React.Component {
                   </span>
                 }
               />
-              <div>{<p style={{margin: 0, padding: 0, paddingRight: 10}}>{Constants.situations[item.situation]}</p>}</div>
+              <div>
+                {
+                  <p style={{ margin: 0, padding: 0, paddingRight: 10 }}>
+                    {Constants.situations[item.situation]}
+                  </p>
+                }
+              </div>
             </List.Item>
           )}
         ></List>
