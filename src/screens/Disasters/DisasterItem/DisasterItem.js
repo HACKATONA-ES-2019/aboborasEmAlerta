@@ -4,7 +4,7 @@ import * as Styles from './styles';
 const DisasterItem = props => {
   return (
     <Styles.Wrapper>
-      <div style={{display: 'flex'}}>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'baseline'}}>
         <h4>{props.title}</h4>
         <p>Categoria: {props.category}</p>
         <p>{props.description}</p>

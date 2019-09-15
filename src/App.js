@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 // screens
-import { LoginScreen } from './screens/Login';
+import LoginScreen from './screens/Login';
 import DisasterScreen from './screens/Disasters/Disasters';
 import { NotFoundScreen } from './screens/NotFound';
 
@@ -28,10 +28,12 @@ class App extends React.Component {
   render() {
     return (
       <Switch>
-        <Route path="/" exact component={PersonIdentifier} />
         <Route path="/" exact component={RegisterDisaster} />
+        <Route path="/" exact component={PersonIdentifier} />
         <Route path="/" exact component={LoginScreen} />
+        <Route path="/cadastrarDesastre" exact component={RegisterDisaster} />
         <Route path="/desastres" exact component={DisasterScreen} />
+        <Route path="/desastres/criar" exact component={RegisterDisaster} />
         <Route path="*" exact component={NotFoundScreen} />
       </Switch>
     );

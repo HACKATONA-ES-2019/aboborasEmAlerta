@@ -1,9 +1,9 @@
 import React from 'react';
-import { Typography, Button, PageHeader } from 'antd';
+import { Button, PageHeader } from 'antd';
 import DisasterItem from './DisasterItem/DisasterItem';
 
 import { connect } from 'react-redux';
-const { Title } = Typography;
+import { Link } from 'react-router-dom';
 
 class Disasters extends React.Component {
   render() {
@@ -12,9 +12,11 @@ class Disasters extends React.Component {
         <PageHeader
           style={{ boxShadow: '0 2px 8px #f0f1f2' }}
           extra={[
-            <Button key="1" type="primary">
-              Registrar desastre
-            </Button>,
+            <Link to="/desastres/criar">
+              <Button key="1" type="primary">
+                Registrar desastre
+              </Button>
+            </Link>,
           ]}
           title="Desastres"
         />
