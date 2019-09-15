@@ -6,7 +6,7 @@ import InfoList from '../../components/infoList/InfoList';
 import Header from '../../components/Header';
 import Constants from '../../lib/constants';
 import { firestore } from '../../lib/firebase';
-import GoogleMaps from '../../components/Map';
+import GoogleMaps from '../../components/MapInfo';
 
 const { Title } = Typography;
 
