@@ -49,7 +49,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
 
   useEffect(() => {
     if (userData && Object.keys(userData).length > 0) {
-      history.push('/usuario');
+      history.push('/seguro');
     }
   }, [userData]);
 
