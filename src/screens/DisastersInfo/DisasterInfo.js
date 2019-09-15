@@ -41,7 +41,7 @@ class DisasterInfo extends React.Component {
     return (
     <Styles.outerDiv>
       <Row>
-        <Col span={12}>
+        <Col lg={12} sm={24}>
         <Header
           title={
             Constants.disasterTypes[this.props.location.state.record.category]
@@ -53,9 +53,12 @@ class DisasterInfo extends React.Component {
           <Button type="primary" style={{width:"100%", height: "5vh"}} >Identificar pessoa</Button>
         </div>
         </Col>
-        <Col span={12}>
-        <GoogleMaps style={{height: '100vh', width: '100%'}} initialCenter={{lat: -30.0612243, lng: -51.1736529}}></GoogleMaps>
-        </Col>
+        <div className="my-map">
+          <Col span={12}>
+          <GoogleMaps style={{height: '100vh', width: '100%'}} initialCenter={{lat: -30.0612243, lng: -51.1736529}}></GoogleMaps>
+          </Col>
+        </div>
+        
       </Row>
     </Styles.outerDiv> 
     );
