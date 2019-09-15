@@ -6,7 +6,7 @@ import 'react-html5-camera-photo/build/css/index.css';
 
 
 export const PersonIdentifier = (props) => {
-
+    console.log(props)
     const [value, setValue] =  useState(1)
     const [showCamera, setShowCamera] =  useState(false)
     const [didTakePhoto, setDidTakePhoto] =  useState(false)
@@ -97,8 +97,8 @@ export const PersonIdentifier = (props) => {
 
             <Styles.space>
                 <Row> 
-                    <Button stlye={{width: 100}} type="danger">Cancelar</Button>
-                    <Button style={{marginLeft: 30, width: 100, justifyContent: "center"}} type="default">Confirmar</Button>
+                    <Button stlye={{width: 100}} type="danger" onClick={() => props.history.goBack()}>Cancelar</Button>
+                    <Button style={{marginLeft: 30, width: 100, justifyContent: "center"}} type="primary">Confirmar</Button>
                 </Row>
             </Styles.space>
             </div>
