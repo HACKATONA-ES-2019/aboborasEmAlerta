@@ -26,14 +26,35 @@ class InfoList extends React.Component {
 
   render() {
     console.log(this.state.tags);
-    const people = this.state.tags.hit ? (this.props.disaster.people || []) : (this.props.disaster.people || []).filter(p => this.state.tags[p.situation])
+    const people = this.state.tags.hit
+      ? this.props.disaster.people || []
+      : (this.props.disaster.people || []).filter(
+          p => this.state.tags[p.situation]
+        );
     return (
       <InfiniteScroll pageStart={0} useWindow={false}>
         <List
           header={
-            <div style={{ display: 'flex', overflowX: 'auto', marginLeft: 10, marginRight: 10, paddingBottom:'10px' }} className="situations-header">
+            <div
+              style={{
+                display: 'flex',
+                overflowX: 'auto',
+                marginLeft: 10,
+                marginRight: 10,
+                paddingBottom: '10px',
+              }}
+              className="situations-header"
+            >
               {Object.entries(Constants.situations).map(([key, value]) => (
-                <CustomTag style={{fontSize: 14, marginLeft:'1vh', marginRight:'1vh'}} checked={this.state.tags[key]} handleChange={(checked) => this.onChangeTag(key, checked)}>
+                <CustomTag
+                  style={{
+                    fontSize: 14,
+                    marginLeft: '1vh',
+                    marginRight: '1vh',
+                  }}
+                  checked={this.state.tags[key]}
+                  handleChange={checked => this.onChangeTag(key, checked)}
+                >
                   {value} ({this.props.disaster.situations[key]})
                 </CustomTag>
               ))}
@@ -52,7 +73,17 @@ class InfoList extends React.Component {
               <div>
                 {
                   <p style={{ margin: 0, padding: 0, paddingRight: 10 }}>
-                    {Constants.situations[item.situation]}
+                    {
+                      <span
+                        style={
+                          item.situation in Constants.colors
+                            ? { color: Constants.colors[item.situation] }
+                            : {}
+                        }
+                      >
+                        {Constants.situations[item.situation]}
+                      </span>
+                    }
                   </p>
                 }
               </div>

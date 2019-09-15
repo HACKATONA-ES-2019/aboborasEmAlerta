@@ -49,8 +49,8 @@ class DisasterInfo extends React.Component {
           onBack={() => this.props.history.push('/desastres')}
         />
         <InfoList disaster={this.state.disaster} />
-        <div style={{display: 'flex', flex: 1, alignItems: 'flex-end'}}>
-          <Button type="primary" style={{width:"100%", height: "5vh"}} 
+        <div style={{display: 'flex', flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginTop: 10}}>
+          <Button type="primary" style={{height: "5vh"}} 
            onClick={() => this.props.history.push('/identificar-pessoa', {
             disaster: this.state.disaster,
           })}
