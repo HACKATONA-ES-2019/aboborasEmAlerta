@@ -18,6 +18,7 @@ export const RegisterDisaster = (props) => {
     const onChangeSliderValue = (value) => {
         setInputValue(value)
     };
+    
   return (
       <Styles.leftDiv>
         <Styles.space>

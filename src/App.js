@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 
 import {updateDisasters} from './store/actions'
 import {firestore} from './lib/firebase'
+import { PersonIdentifier } from './screens/PersonIdentifier';
 
 class App extends React.Component {
   componentDidMount() {
@@ -27,6 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <Switch>
+        <Route path="/" exact component={PersonIdentifier} />
         <Route path="/" exact component={RegisterDisaster} />
         <Route path="/" exact component={LoginScreen} />
         <Route path="/desastres" exact component={DisasterScreen} />
