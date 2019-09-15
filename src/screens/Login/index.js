@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as Styles from './styles';
-import { requestNotificationPermission } from '../../helpers';
+import { requestNotificationPermission, getCurrentPosition } from '../../helpers';
 import { Form, Icon, Input, Button, Typography } from 'antd';
 import { messaging, firestore, auth } from '../../lib/firebase';
 const { Title } = Typography;
@@ -16,21 +16,28 @@ export const LoginScreen = () => {
   }, []);
 
   const handleClick = async () => {
-    const token = await requestNotificationPermission();
 
-    if (token) {
-      auth
-        .signInWithEmailAndPassword(`${cpf}@aboborasemalerta.com`, password)
-        .then(data => {
-          updateNotificationToken(data.user.uid, token);
-        })
-        .catch(err => {
-          if (err.code === 'auth/wrong-password') {
-            alert('Senha inválida');
-          } else {
-            registerUser(token);
-          }
-        });
+    try {
+      const token = await requestNotificationPermission();
+      const userLocation = await getCurrentPosition();
+      console.log(userLocation)
+  
+      if (token) {
+        auth
+          .signInWithEmailAndPassword(`${cpf}@aboborasemalerta.com`, password)
+          .then(data => {
+            updateNotificationToken(data.user.uid, token);
+          })
+          .catch(err => {
+            if (err.code === 'auth/wrong-password') {
+              alert('Senha inválida');
+            } else {
+              registerUser(token);
+            }
+          });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -50,9 +57,13 @@ export const LoginScreen = () => {
     firestore
       .collection('users')
       .doc(userUid)
-      .set({
-        notificationToken: token,
-      }, { merge: true });
+      .set(
+        {
+          notificationToken: token,
+          cpf: cpf,
+        },
+        { merge: true }
+      );
   };
 
   return (
@@ -76,7 +87,7 @@ export const LoginScreen = () => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" onClick={handleClick}>
-            Entrare
+            Entrar
           </Button>
         </Form.Item>
       </Form>
