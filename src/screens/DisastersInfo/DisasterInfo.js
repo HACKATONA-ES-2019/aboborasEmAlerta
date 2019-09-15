@@ -29,6 +29,7 @@ class DisasterInfo extends React.Component {
     disaster: mountDisaster(this.props.location.state.record),
   };
   componentDidMount() {
+    console.log(this.props)
     firestore
       .collection('disasters')
       .doc(this.props.location.state.record.id)
@@ -59,7 +60,7 @@ class DisasterInfo extends React.Component {
         </Col>
         <div className="my-map">
           <Col span={12}>
-          <GoogleMaps style={{height: '100vh', width: '100%'}} initialCenter={{lat: -30.0612243, lng: -51.1736529}}></GoogleMaps>
+          <GoogleMaps style={{height: '100vh', width: '100%'}} initialCenter={{lat: this.props.location.state.record.coords.latitude, lng: this.props.location.state.record.coords.longitude}}></GoogleMaps>
           </Col>
         </div>
         
