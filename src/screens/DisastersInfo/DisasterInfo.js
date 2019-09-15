@@ -6,12 +6,21 @@ import InfoList from '../../components/infoList/InfoList';
 import Header from '../../components/Header';
 import Constants from '../../lib/constants';
 import { firestore } from '../../lib/firebase';
-import Constants from '../../lib/constants'
+
 
 const { Title } = Typography;
+
+const mountDisaster = (disaster) => {
+  const situations = Object.keys(Constants.situations).reduce((acc, curr) => ({...acc, [curr]: 0}), {})
+  const peoble = disaster.peoble || []
+  peoble.forEach(p => {
+      situations[p.situation] = situations[p.situation] + 1
+  })
+  return {...disaster, situations}
+}
 class DisasterInfo extends React.Component {
   state = {
-    disaster: this.props.location.state.record,
+    disaster: mountDisaster(this.props.location.state.record),
   };
   componentDidMount() {
     firestore
@@ -22,15 +31,7 @@ class DisasterInfo extends React.Component {
       });
   }
 
-  mountDisaster = (disaster) => {
-    disaster.map(d => {
-        const situations = Object.keys(Constants.situations).reduce((acc, curr) => ({...acc, [curr]: 0}), {})
-        d.peoble.forEach(p => {
-            situations[p.situation] = situations[p.situation] + 1
-        })
-        return {...d, situations}
-    })
-  }
+  
 
   render() {
     return (
