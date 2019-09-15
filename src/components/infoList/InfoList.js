@@ -72,7 +72,7 @@ class InfoList extends React.Component {
               />
               <div>
                 {
-                  <p style={{ margin: 0, padding: 0, paddingRight: 10 }}>
+                  <p style={{ margin: 0, padding: 0, paddingRight: 10, fontWeight: 500 }}>
                     {
                       <span
                         style={
