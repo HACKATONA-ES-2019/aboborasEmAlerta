@@ -14,12 +14,14 @@ const mountDisaster = disaster => {
     (acc, curr) => ({ ...acc, [curr]: 0 }),
     {}
   );
-  const peoble = disaster.people || [];
-  console.log({ peoble });
-  peoble.forEach(p => {
+  const people = disaster.people || {};
+  const peopleList = []
+  Object.entries(people).forEach(([key, p]) => {
+    peopleList.push({...p, id: key})
     situations[p.situation] = situations[p.situation] + 1;
   });
-  return { ...disaster, situations: { ...situations, hit: peoble.length } };
+  console.log(peopleList)
+  return { ...disaster, situations: { ...situations, hit: peopleList.length }, people: peopleList };
 };
 class DisasterInfo extends React.Component {
   state = {

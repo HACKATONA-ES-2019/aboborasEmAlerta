@@ -26,7 +26,7 @@ class InfoList extends React.Component {
 
   render() {
     console.log(this.state.tags);
-    const peoble = this.state.tags.hit ? (this.props.disaster.people || []) : (this.props.disaster.people || []).filter(p => this.state.tags[p.situation])
+    const people = this.state.tags.hit ? (this.props.disaster.people || []) : (this.props.disaster.people || []).filter(p => this.state.tags[p.situation])
     return (
       <InfiniteScroll pageStart={0} useWindow={false}>
         <List
@@ -39,7 +39,7 @@ class InfoList extends React.Component {
               ))}
             </div>
           }
-          dataSource={peoble.sort((a, b) => a.name.localeCompare(b.name))}
+          dataSource={people.sort((a, b) => a.name.localeCompare(b.name))}
           renderItem={item => (
             <List.Item key={item.name}>
               <List.Item.Meta
