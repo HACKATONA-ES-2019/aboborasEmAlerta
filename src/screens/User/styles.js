@@ -20,11 +20,15 @@ export const ButtonFull = Styled(Button)`
     justify-content: center;
     width:100%;
     height: 40vh !important;
+    border: none;
+    border-radius: 0;
 `;
 
 export const Buttonfinal = Styled(Button)`
     width:100%;
     height: 10vh !important;
+    border: none;
+    border-radius: 0;
 `;
 
 export const TextTitle = Styled(Title)`
