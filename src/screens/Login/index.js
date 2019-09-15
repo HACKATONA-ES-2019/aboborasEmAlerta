@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import * as Styles from './styles';
 import { requestNotificationPermission } from '../../helpers';
 import { Form, Icon, Input, Button, Typography } from 'antd';
@@ -34,7 +35,7 @@ const updateUserLocalization = async (userUid, { latitude, longitude }) => {
     );
 };
 
-const LoginScreen = ({ userData, updateUserData }) => {
+const LoginScreen = ({ userData, updateUserData, history }) => {
   const [cpf, setCpf] = useState(undefined);
   const [password, setPassword] = useState(undefined);
 
@@ -43,6 +44,12 @@ const LoginScreen = ({ userData, updateUserData }) => {
       alert(`Mensagem Recebida: ${msg}`);
     });
   }, []);
+
+  useEffect(() => {
+    if(Object.keys(userData).length > 0) {
+      history.push('/seguro');
+    }
+  }, [userData]);
 
   const handleClick = async () => {
     try {
@@ -123,4 +130,4 @@ const LoginScreen = ({ userData, updateUserData }) => {
   );
 };
 
-export default withUser(LoginScreen);
+export default withRouter(withUser(LoginScreen));
