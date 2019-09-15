@@ -1,55 +1,25 @@
 import React from 'react';
 import { Map, GoogleApiWrapper } from 'google-maps-react';
-import config from "../../lib/config";
-import {Row, Col, Typography, List, Button} from "antd";
+import config from '../../lib/config';
+import { Row, Col, Typography, List, Button } from 'antd';
 import * as Styles from './styles';
-import InfoList from "../../components/infoList/InfoList";
-
+import InfoList from '../../components/infoList/InfoList';
+import Header from '../../components/Header';
+import Constants from '../../lib/constants'
 
 const { Title } = Typography;
-
-const props = {
-    description: 'É INCENDIO BAGUAL'
-};
-
 class DisasterInfo extends React.Component {
-
-    render() {
-        return (
-            <Row>
-
-                <Col span={12}>
-                    <Styles.leftDiv>
-                        <Row>
-                            <Title>
-                                {props.description}
-                            </Title>
-                        </Row>
-                        <Row>
-
-                            <div>
-                                <InfoList/>
-                            </div>
-
-                        </Row>
-                        <Row>
-                            <Button>
-                                NOVO MALUCO
-                            </Button>
-                        </Row>
-                    </Styles.leftDiv>
-                </Col>
-
-                <Col span={12}>
-                    <Styles.rigthDiv>
-                        MAPA
-                    </Styles.rigthDiv>
-                </Col>
-
-            </Row>
-
-        );
+    componentDidMount(){
+        console.log(this.props)
     }
+  render() {
+    return (
+      <div style={{display: 'flex', flexDirection: 'column', flex: 1}}>
+          <Header title={Constants.disasterTypes[this.props.location.state.record.category]} onBack={() => this.props.history.push('/desastres')}/>
+        <InfoList />
+      </div>
+    );
+  }
 }
 
-export default GoogleApiWrapper({apiKey: config.firebase.apiKey})(DisasterInfo);
+export default DisasterInfo

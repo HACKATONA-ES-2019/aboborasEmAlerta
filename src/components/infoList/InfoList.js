@@ -18,13 +18,7 @@ class InfoList extends React.Component {
     };
 
     componentDidMount() {
-        firestore.collection("users").get().then(querySnapshot => {
-            const data = querySnapshot.docs.map(doc => doc.data());
-            this.setState({
-                data,
-                loading: false,
-            });
-        });
+        
     };
 
     filterOutRisk() {
