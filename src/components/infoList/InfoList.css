@@ -3,9 +3,9 @@
     border-radius: 4px;
     overflow: auto;
     padding: 8px 24px;
-    height: 300px;
-    width: 600px;
+    height: '100%';
 }
+
 .demo-loading-container {
     position: absolute;
     bottom: 40px;

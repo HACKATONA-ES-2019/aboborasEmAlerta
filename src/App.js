@@ -19,12 +19,12 @@ import { PersonIdentifier } from './screens/PersonIdentifier';
 
 class App extends React.Component {
   componentDidMount() {
-    //this.listenDisasters()
+    this.listenDisasters()
   }
 
   listenDisasters(){
     firestore.collection('disasters').onSnapshot(disasters => {
-      this.props.updateDisasters(disasters.docs.map(d => d.data()))
+      this.props.updateDisasters(disasters.docs.map(d => ({id: d.id, ...d.data()}) ))
     });
   }
   

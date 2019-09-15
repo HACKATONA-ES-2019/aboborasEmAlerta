@@ -8,7 +8,7 @@ class GoogleMaps extends React.Component {
       <Map
         google={this.props.google}
         zoom={8}
-        style={{ width: '50%', height: '100%' }}
+        style={this.props.style}
         initialCenter={{ lat: 47.49855629475769, lng: -122.14184416996333 }}
       />
     );
