@@ -72,7 +72,7 @@ class User extends React.Component {
   };
 
   onClickSafe = () => {
-    console.log('safe');
+    this.props.history.push('/seguro')
   };
 
   render() {
