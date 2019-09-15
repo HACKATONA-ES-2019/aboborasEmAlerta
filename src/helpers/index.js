@@ -10,3 +10,9 @@ export const requestNotificationPermission = async () => {
     console.error('Permissão para notificações negada, encerrando aplicação');
   }
 };
+
+export function getCurrentPosition(options = {}) {
+  return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+}
