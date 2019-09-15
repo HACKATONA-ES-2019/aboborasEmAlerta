@@ -25,6 +25,7 @@ const columns = [
 ];
 class Disasters extends React.Component {
 
+
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>

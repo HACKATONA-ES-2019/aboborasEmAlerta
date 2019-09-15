@@ -22,7 +22,7 @@ class App extends React.Component {
 
   listenDisasters(){
     firestore.collection('disasters').onSnapshot(disasters => {
-      this.props.updateDisasters(disasters.docs.map(d => d.data()))
+      this.props.updateDisasters(disasters.docs.map(d => ({id: d.id, ...d.data()}) ))
     });
   }
   

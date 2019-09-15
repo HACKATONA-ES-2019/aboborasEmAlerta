@@ -1,76 +1,41 @@
-import {List, message, Avatar, Spin, Row, Col} from 'antd';
+import { List, message, Avatar, Spin, Row, Col } from 'antd';
 import reqwest from 'reqwest';
 import './InfoList.css';
 
 import InfiniteScroll from 'react-infinite-scroller';
-import * as React from "react";
-import {firestore} from "../../lib/firebase";
-import Button from "antd/es/button";
+import * as React from 'react';
+import { firestore } from '../../lib/firebase';
+import Button from 'antd/es/button';
+import CustomTag from '../Tag';
 
 class InfoList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-        };
+  render() {
+    return (
+      <InfiniteScroll pageStart={0} useWindow={false}>
+        <List
+          header={
+            <div style={{ display: 'flex', overflowX: 'auto' }}>
+              <CustomTag>Atingidos</CustomTag>
 
-        this.filterOutRisk = this.filterOutRisk.bind(this);
-    };
+              <CustomTag>Em risco</CustomTag>
 
-    componentDidMount() {
-        
-    };
+              <CustomTag>Feridos</CustomTag>
 
-    filterOutRisk() {
+              <CustomTag>Fora de risco</CustomTag>
 
-    };
-
-    render() {
-        return (
-            <div className="demo-infinite-container">
-                <InfiniteScroll
-                    pageStart={0}
-                    useWindow={false}
-                >
-                    <List
-                        header={
-                            <Row>
-                                <Col span={4}>
-                                    <Button onClick={this.filterOutRisk}>FR</Button>
-                                </Col>
-                                <Col span={4}>
-                                    <Button>ER</Button>
-                                </Col>
-                                <Col span={4}>
-                                    <Button>NI</Button>
-                                </Col>
-                                <Col span={4}>
-                                    <Button>ER</Button>
-                                </Col>
-                                <Col span={4}>
-                                    <Button>OB</Button>
-                                </Col>
-                            </Row>
-                        }
-                        dataSource={this.state.data}
-                        renderItem={item => (
-                            <List.Item key={item.name}>
-                                <List.Item.Meta
-                                    title={<a href="">{item.name}</a>}
-                                />
-                            </List.Item>
-                        )}
-                    >
-                        {this.state.loading && this.state.hasMore && (
-                            <div className="demo-loading-container">
-                                <Spin />
-                            </div>
-                        )}
-                    </List>
-                </InfiniteScroll>
+              <CustomTag>Óbitos</CustomTag>
             </div>
-        );
-    }
+          }
+          dataSource={this.props.disaster.peoble || []}
+          renderItem={item => (
+            <List.Item key={item.name}>
+              <List.Item.Meta title={<a href="">{item.name}</a>} />
+            </List.Item>
+          )}
+        ></List>
+      </InfiniteScroll>
+    );
+  }
 }
 
 export default InfoList;
