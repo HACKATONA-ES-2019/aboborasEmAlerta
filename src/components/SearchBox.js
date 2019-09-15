@@ -44,9 +44,12 @@ class SearchBox extends Component {
         style={{
           width: '392px',
           height: '48px',
-          fontSize: '20px',
-          padding: '12px 104px 11px 64px',
-          border: '2px solid yellow'
+          fontSize: '16px',
+          padding: '12px 20px 11px 20px',
+          borderRadius: 10,
+          borderWidth: 0,
+          marginTop: 10,
+          marginLeft: 10
         }}
       />
     );
