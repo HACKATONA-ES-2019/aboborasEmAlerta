@@ -7,7 +7,7 @@ export const Div = Styled.div`
     align-self: center;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 70vh;
     flex-direction: column;
 `;
 
