@@ -21,7 +21,7 @@ class User extends React.Component {
   componentDidMount() {
     auth.onAuthStateChanged(u => {
       if (u && u.uid) {
-        this.set({ uid: u.uid });
+        this.setState({ uid: u.uid });
       }
     });
 
