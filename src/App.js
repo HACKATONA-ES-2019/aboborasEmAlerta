@@ -28,7 +28,6 @@ class App extends React.Component {
   render() {
     return (
       <Switch>
-        <Route path="/" exact component={RegisterDisaster} />
         <Route path="/" exact component={PersonIdentifier} />
         <Route path="/" exact component={LoginScreen} />
         <Route path="/cadastrarDesastre" exact component={RegisterDisaster} />
