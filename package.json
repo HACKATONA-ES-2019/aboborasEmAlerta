@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.23.2",
+    "dayjs": "^1.8.16",
     "firebase": "^6.6.1",
     "google-maps-react": "^2.0.2",
     "react": "^16.9.0",

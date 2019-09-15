@@ -1,13 +1,32 @@
 import React from 'react';
-import { Button, PageHeader } from 'antd';
+import { Button, PageHeader, Table } from 'antd';
 import DisasterItem from './DisasterItem/DisasterItem';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
+import dayjs from 'dayjs'
 
+const columns = [
+  {
+    title: 'Data',
+    dataIndex: 'creationDate',
+    render: v => {console.log(v); return v?  dayjs(v.toDate()).format('DD-MM-YYYY HH:mm:ss') : null}
+  },
+  {
+    title: 'Categoria',
+    key: 'category',
+    dataIndex: 'category'
+  },
+  {
+    title: 'Descrição',
+    key: 'description',
+    dataIndex: 'description'
+  }
+]
 class Disasters extends React.Component {
   render() {
+    console.log(this.props.disasters)
     return (
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Header
@@ -19,10 +38,8 @@ class Disasters extends React.Component {
             </Link>,
           ]}
         />
-        <div style={{ display: 'block' }}>
-          {this.props.disasters.map(d => (
-            <DisasterItem {...d} />
-          ))}
+        <div style={{margin: 20}}>
+        <Table dataSource={this.props.disasters} columns={columns} />;
         </div>
       </div>
     );
