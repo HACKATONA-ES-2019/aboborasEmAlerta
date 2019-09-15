@@ -92,7 +92,7 @@ const RegisterDisaster = ({ history }) => {
       },
     });
 
-    firestore
+    await firestore
       .collection('users')
       .get()
       .then(querySnapshot => {
