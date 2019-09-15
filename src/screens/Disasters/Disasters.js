@@ -1,16 +1,35 @@
 import React from 'react';
-import { Button, PageHeader } from 'antd';
+import { Button, PageHeader, Table } from 'antd';
 import DisasterItem from './DisasterItem/DisasterItem';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Header from '../../components/Header';
+import dayjs from 'dayjs';
 
+const columns = [
+  {
+    title: 'Data',
+    dataIndex: 'creationDate',
+    render: v => (v ? dayjs(v.toDate()).format('DD-MM-YYYY HH:mm:ss') : null),
+  },
+  {
+    title: 'Categoria',
+    key: 'category',
+    dataIndex: 'category',
+  },
+  {
+    title: 'Descrição',
+    key: 'description',
+    dataIndex: 'description',
+  },
+];
 class Disasters extends React.Component {
   render() {
+    console.log(this.props.disasters);
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <PageHeader
-          style={{ boxShadow: '0 2px 8px #f0f1f2' }}
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Header
           extra={[
             <Link to="/desastres/criar">
               <Button key="1" type="primary">
@@ -18,13 +37,22 @@ class Disasters extends React.Component {
               </Button>
             </Link>,
           ]}
-          title="Desastres"
         />
-
-        <div style={{ display: 'block' }}>
-          {this.props.disasters.map(d => (
-            <DisasterItem {...d} />
-          ))}
+        <div style={{ margin: 20 }}>
+          <Table
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: event => {}, // click row
+                onDoubleClick: event => {}, // double click row
+                onContextMenu: event => {}, // right button click row
+                onMouseEnter: event => {}, // mouse enter row
+                onMouseLeave: event => {}, // mouse leave row
+              };
+            }}
+            dataSource={this.props.disasters}
+            columns={columns}
+          />
+          ;
         </div>
       </div>
     );

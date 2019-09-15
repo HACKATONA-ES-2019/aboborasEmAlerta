@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import LoginScreen from './screens/Login';
 import DisasterScreen from './screens/Disasters/Disasters';
 import { NotFoundScreen } from './screens/NotFound';
+import DisasterInfo from "./screens/DisastersInfo/DisasterInfo";
 
 import  RegisterDisaster  from './screens/RegisterDisaster';
 import {connect} from 'react-redux';
@@ -15,7 +16,7 @@ import { PersonIdentifier } from './screens/PersonIdentifier';
 
 class App extends React.Component {
   componentDidMount() {
-    this.listenDisasters()
+    //this.listenDisasters()
   }
 
   listenDisasters(){
@@ -23,7 +24,6 @@ class App extends React.Component {
       this.props.updateDisasters(disasters.docs.map(d => d.data()))
     });
   }
-
   
   render() {
     return (
@@ -31,7 +31,8 @@ class App extends React.Component {
         <Route path="/" exact component={LoginScreen} />
         <Route path="/personIdentifier" exact component={PersonIdentifier} />
         <Route path="/registerDisaster" exact component={RegisterDisaster} />
-        <Route path="/cadastrarDesastre" exact component={RegisterDisaster} />
+        <Route path="/" exact component={LoginScreen} />
+        <Route path="/desastresInfo" exact component={DisasterInfo} />
         <Route path="/desastres" exact component={DisasterScreen} />
         <Route path="/desastres/criar" exact component={RegisterDisaster} />
         <Route path="*" exact component={NotFoundScreen} />
