@@ -7,18 +7,20 @@ import Header from '../../components/Header';
 import Constants from '../../lib/constants';
 import { firestore } from '../../lib/firebase';
 
-
 const { Title } = Typography;
 
-const mountDisaster = (disaster) => {
-  const situations = Object.keys(Constants.situations).reduce((acc, curr) => ({...acc, [curr]: 0}), {})
-  const peoble = disaster.people || []
-  console.log({peoble})
+const mountDisaster = disaster => {
+  const situations = Object.keys(Constants.situations).reduce(
+    (acc, curr) => ({ ...acc, [curr]: 0 }),
+    {}
+  );
+  const peoble = disaster.people || [];
+  console.log({ peoble });
   peoble.forEach(p => {
-      situations[p.situation] = situations[p.situation] + 1
-  })
-  return {...disaster, situations: {...situations, hit: peoble.length}}
-}
+    situations[p.situation] = situations[p.situation] + 1;
+  });
+  return { ...disaster, situations: { ...situations, hit: peoble.length } };
+};
 class DisasterInfo extends React.Component {
   state = {
     disaster: mountDisaster(this.props.location.state.record),
@@ -32,11 +34,9 @@ class DisasterInfo extends React.Component {
       });
   }
 
-  
-
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%' }}>
         <Header
           title={
             Constants.disasterTypes[this.props.location.state.record.category]
@@ -44,6 +44,9 @@ class DisasterInfo extends React.Component {
           onBack={() => this.props.history.push('/desastres')}
         />
         <InfoList disaster={this.state.disaster} />
+        <div style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginBottom: 20}}>
+          <Button type="primary">Identificar pessoa</Button>
+        </div>
       </div>
     );
   }

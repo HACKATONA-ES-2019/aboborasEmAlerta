@@ -48,7 +48,6 @@ class Disasters extends React.Component {
             dataSource={this.props.disasters}
             columns={columns}
           />
-          ;
         </div>
       </div>
     );
