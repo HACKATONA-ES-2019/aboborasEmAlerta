@@ -96,6 +96,7 @@ class User extends React.Component {
                       fontSize: 15,
                       backgroundColor: '#C1C1C1',
                       borderWidth: 0,
+                      borderRadius: 0
                     }}
                   >
                     NÃO ESTOU ENVOLVIDO!
@@ -106,7 +107,7 @@ class User extends React.Component {
                     onClick={this.onClickSafe}
                     type="primary"
                     icon="check"
-                    style={{ fontSize: 30, backgroundColor: '#71BF5C' }}
+                    style={{ fontSize: 30, backgroundColor: '#71BF5C', borderWidth: 0, borderRadius: 0 }}
                   >
                     ESTOU BEM!
                   </Styles.ButtonFull>
@@ -116,7 +117,7 @@ class User extends React.Component {
                     onClick={this.onClickAtRisk}
                     type="danger"
                     icon="warning"
-                    style={{ fontSize: 30, backgroundColor: '#C2504D' }}
+                    style={{ fontSize: 30, backgroundColor: '#C2504D', borderWidth: 0, borderRadius: 0 }}
                   >
                     PRECISO DE AJUDA!
                   </Styles.ButtonFull>
