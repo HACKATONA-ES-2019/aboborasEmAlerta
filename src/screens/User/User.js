@@ -11,7 +11,8 @@ class User extends React.Component {
     inDanger: true,
     uid: '',
     disaster: '',
-    disasterId: 'B5QHJCfJ3KfJM1LJbxNY',
+    disasterId: '1TX18yVsuA6Vxs3GpjHB',
+    user: {},
   };
 
   switchInDanger() {
@@ -22,57 +23,43 @@ class User extends React.Component {
     auth.onAuthStateChanged(u => {
       if (u && u.uid) {
         this.setState({ uid: u.uid });
+        firestore
+          .collection('users')
+          .doc(u.uid)
+          .get()
+          .then(u => {
+            this.setState({ user: u.data() });
+          });
       }
     });
-
-    firestore
-      .collection('disasters')
-      .doc('B5QHJCfJ3KfJM1LJbxNY')
-      .onSnapshot(doc => {
-        this.setState({ disaster: doc.data() });
-      });
   }
 
   onClickNotAffect = () => {};
 
   onClickAtRisk = async () => {
     let value = 'atRisk';
-    let cpf = '';
-    let name = '';
+
     const disasterId = this.state.disasterId;
     const disasterRef = firestore.collection('/disasters').doc(disasterId);
     const disaster = (await disasterRef.get()).data();
-    const people = Object.entries(disaster.people).map(([key, value]) => ({
-      ...value,
-      id: key,
-    }));
-    const person = people.find(p => p.cpf === cpf);
-    if (person) {
-      const newValue = {
-        people: {
-          ...disaster.people,
-          [person.id]: { ...person, situation: value },
-        },
-      };
 
-      await firestore
-        .collection('/disasters')
-        .doc(disasterId)
-        .set(newValue, { merge: true });
-    } else {
-      const newValu = {
-        people: { ...disaster.people, [cpf]: { cpf, situation: value, name } },
-      };
+    const newValue = {
+      people: {
+        ...disaster.people,
+        [this.state.uid]: { ...this.state.user, situation: value },
+      },
+    };
 
-      await firestore
-        .collection('/disasters')
-        .doc(disasterId)
-        .set(newValu, { merge: true });
-    }
+    await firestore
+      .collection('/disasters')
+      .doc(disasterId)
+      .set(newValue, { merge: true });
+    
+    this.props.history.push('/seguro', {msg: 'A ajuda está a caminho.'})
   };
 
   onClickSafe = () => {
-    this.props.history.push('/seguro')
+    this.props.history.push('/seguro', {msg: 'Obrigado por nos informar.'});
   };
 
   render() {
@@ -96,7 +83,7 @@ class User extends React.Component {
                       fontSize: 15,
                       backgroundColor: '#C1C1C1',
                       borderWidth: 0,
-                      borderRadius: 0
+                      borderRadius: 0,
                     }}
                   >
                     NÃO ESTOU ENVOLVIDO!
@@ -107,7 +94,12 @@ class User extends React.Component {
                     onClick={this.onClickSafe}
                     type="primary"
                     icon="check"
-                    style={{ fontSize: 30, backgroundColor: '#71BF5C', borderWidth: 0, borderRadius: 0 }}
+                    style={{
+                      fontSize: 30,
+                      backgroundColor: '#71BF5C',
+                      borderWidth: 0,
+                      borderRadius: 0,
+                    }}
                   >
                     ESTOU BEM!
                   </Styles.ButtonFull>
@@ -117,7 +109,12 @@ class User extends React.Component {
                     onClick={this.onClickAtRisk}
                     type="danger"
                     icon="warning"
-                    style={{ fontSize: 30, backgroundColor: '#C2504D', borderWidth: 0, borderRadius: 0 }}
+                    style={{
+                      fontSize: 30,
+                      backgroundColor: '#C2504D',
+                      borderWidth: 0,
+                      borderRadius: 0,
+                    }}
                   >
                     PRECISO DE AJUDA!
                   </Styles.ButtonFull>
