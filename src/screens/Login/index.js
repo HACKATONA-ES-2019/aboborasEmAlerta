@@ -1,12 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import * as Styles from './styles';
-import { requestNotificationPermission, getCurrentPosition } from '../../helpers';
+import { requestNotificationPermission } from '../../helpers';
 import { Form, Icon, Input, Button, Typography } from 'antd';
-import { withUser } from '../../containers'
+import { withUser } from '../../containers';
 import { messaging, firestore, auth } from '../../lib/firebase';
 const { Title } = Typography;
 
-const LoginScreen = () => {
+const startWatchPosition = userUid => {
+  navigator.geolocation.watchPosition(
+    position => {
+      updateUserLocalization(userUid, {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+      console.log('Localização do usuário atualizada');
+    },
+    error => {
+      console.log(error);
+    }
+  );
+};
+
+const updateUserLocalization = async (userUid, { latitude, longitude }) => {
+  firestore
+    .collection('users')
+    .doc(userUid)
+    .set(
+      {
+        latitude,
+        longitude,
+      },
+      { merge: true }
+    );
+};
+
+const LoginScreen = ({ userData, updateUserData }) => {
   const [cpf, setCpf] = useState(undefined);
   const [password, setPassword] = useState(undefined);
 
@@ -17,17 +45,15 @@ const LoginScreen = () => {
   }, []);
 
   const handleClick = async () => {
-
     try {
       const token = await requestNotificationPermission();
-      // const userLocation = await getCurrentPosition();
-
       if (token) {
         auth
           .signInWithEmailAndPassword(`${cpf}@aboborasemalerta.com`, password)
           .then(data => {
             updateNotificationToken(data.user.uid, token);
-            // updateUserLocalization(data.user.uid)
+            updateUserData({ userUid: data.user.uid });
+            startWatchPosition(data.user.uid);
           })
           .catch(err => {
             if (err.code === 'auth/wrong-password') {
@@ -44,11 +70,12 @@ const LoginScreen = () => {
 
   const registerUser = async token => {
     try {
-      const response = auth.createUserWithEmailAndPassword(
+      const response = await auth.createUserWithEmailAndPassword(
         `${cpf}@aboborasemalerta.com`,
         password
       );
       updateNotificationToken(response.user.uid, token);
+      startWatchPosition(response.user.uid);
     } catch (error) {
       console.log(error);
     }
@@ -66,18 +93,6 @@ const LoginScreen = () => {
         { merge: true }
       );
   };
-
-  const updateUserLocalization = async (userUid, localization) => {
-    firestore
-      .collection('users')
-      .doc(userUid)
-      .set(
-        {
-          localization
-        },
-        { merge: true }
-      );
-  }
 
   return (
     <Styles.Wrapper>

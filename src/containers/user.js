@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startLoading } from '../store/actions';
+import { updateUserData } from '../store/actions';
 
 const withUser = (WrappedComponent) => {
   const mapStateToProps = ({ user }) => {
@@ -10,7 +10,7 @@ const withUser = (WrappedComponent) => {
   };
 
   const mapDispatchToProps = dispatch => ({
-    startLoading: () => dispatch(startLoading()),
+    updateUserData: ({ userUid }) => dispatch(updateUserData(userUid)),
   });
 
   const loaderContainer = (props) => {

@@ -24,7 +24,6 @@ class App extends React.Component {
       this.props.updateDisasters(disasters.docs.map(d => d.data()))
     });
   }
-
   
   render() {
     return (
