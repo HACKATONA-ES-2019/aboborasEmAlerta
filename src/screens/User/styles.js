@@ -8,8 +8,9 @@ export const Wrapper = Styled.div`
     align-self: center;
     justify-content: center;
     align-items: center;
-    height: 100rem;
+    height: 500px;
     flex-direction: column;
+    flex: 1;
 `;
 
 export const ButtonFull = Styled(Button)`
