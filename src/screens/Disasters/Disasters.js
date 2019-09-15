@@ -10,7 +10,7 @@ const columns = [
   {
     title: 'Data',
     dataIndex: 'creationDate',
-    render: v => (v ? dayjs(v.toDate()).format('DD-MM-YYYY HH:mm:ss') : null),
+    render: v => (v ? dayjs(v.toDate()).format('DD/MM/YYYY HH:mm:ss') : null),
   },
   {
     title: 'Categoria',

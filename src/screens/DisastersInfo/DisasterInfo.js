@@ -33,7 +33,7 @@ class DisasterInfo extends React.Component {
       .collection('disasters')
       .doc(this.props.location.state.record.id)
       .onSnapshot(doc => {
-        this.setState({ disaster: mountDisaster(doc.data()) });
+        this.setState({ disaster: mountDisaster({...doc.data(), id: doc.id}) });
       });
   }
 
@@ -50,7 +50,11 @@ class DisasterInfo extends React.Component {
         />
         <InfoList disaster={this.state.disaster} />
         <div style={{display: 'flex', flex: 1, alignItems: 'flex-end'}}>
-          <Button type="primary" style={{width:"100%", height: "5vh"}} >Identificar pessoa</Button>
+          <Button type="primary" style={{width:"100%", height: "5vh"}} 
+           onClick={() => this.props.history.push('/identificar-pessoa', {
+            disaster: this.state.disaster,
+          })}
+          >Identificar pessoa</Button>
         </div>
         </Col>
         <div className="my-map">

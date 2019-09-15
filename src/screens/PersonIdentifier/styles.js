@@ -12,7 +12,7 @@ export const Div = Styled.div`
 `;
 
 export const space = Styled.div`
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     align-self: center;
     display: flex;
     flex-direction: column;
