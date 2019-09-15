@@ -8,22 +8,28 @@ export const Wrapper = Styled.div`
     align-self: center;
     justify-content: center;
     align-items: center;
-    height: 500px;
+    height: 100rem;
     flex-direction: column;
 `;
 
 export const ButtonFull = Styled(Button)`
+  display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     width:100%;
-    height: 510px !important;
+    height: 40vh !important;
 `;
 
 export const Buttonfinal = Styled(Button)`
-    margin-top:5px !important;
     width:100%;
-    height: 50px !important;
-    border: 2px solid #000 !important;
+    height: 10vh !important;
 `;
 
 export const TextTitle = Styled(Title)`
+    display: flex;
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 5vh
 `;
