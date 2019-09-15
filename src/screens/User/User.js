@@ -13,7 +13,6 @@ class User extends React.Component {
     inDanger: true,
     uid: '',
     disaster: {},
-    disasterId: '1TX18yVsuA6Vxs3GpjHB',
     user: {},
   };
 
@@ -40,8 +39,13 @@ class User extends React.Component {
       .doc(disasterId)
       .get()
       .then(d => {
-        console.log(d.data());
-        this.setState({ disaster: d.data() });
+        const data = d.data();
+        this.setState({
+          disaster: {
+            ...data,
+            id: d.id,
+          },
+        });
       });
   }
 
@@ -50,7 +54,7 @@ class User extends React.Component {
   onClickAtRisk = async () => {
     let value = 'atRisk';
 
-    const disasterId = this.state.disasterId;
+    const disasterId = this.state.disaster.id;
     const disasterRef = firestore.collection('/disasters').doc(disasterId);
     const disaster = (await disasterRef.get()).data();
 
@@ -72,8 +76,10 @@ class User extends React.Component {
   onClickSafe = async () => {
     let value = 'safe';
 
-    const disasterId = this.state.disasterId;
-    const disasterRef = firestore.collection('/disasters').doc(disasterId);
+    const disasterId = this.state.disaster.id;
+    const disasterRef = await firestore
+      .collection('/disasters')
+      .doc(disasterId);
     const disaster = (await disasterRef.get()).data();
 
     const newValue = {
