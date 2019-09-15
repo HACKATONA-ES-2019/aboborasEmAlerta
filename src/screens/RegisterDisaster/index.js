@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import { withRouter } from 'react-router-dom';
 import Firebase, { firestore } from '../../lib/firebase';
 import { getDistanceFromLatLonInKm } from '../../helpers';
+import config from '../../lib/config';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -16,6 +17,33 @@ const RegisterDisaster = ({ history }) => {
   const [disasterType, setDisasterType] = useState(undefined);
   const [description, setDescription] = useState(undefined);
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
+
+  const notifyUser = (userData, disaster) => {
+    console.log(userData);
+    fetch('https://fcm.googleapis.com/fcm/send', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization:
+          'Key=AAAAXv5wc9o:APA91bH82rMQ9b3VQfuw9zBE4ROs6WuUxwXbV6QSzsCkMGwqDP5pFvSzvH3leDMrfFEobAe7C3gMiDF195QV-DTp_HWs0m2g4CMb0qZEZCL3w3MawG1WkY6k-VSgfaYGpVdeNSH4y5Dc',
+      }),
+      body: JSON.stringify({
+        to: userData.notificationToken,
+        collapse_key: 'type_a',
+        notification: {
+          title: 'Alerta de desastre em sua área!',
+          body: description,
+        },
+        data: {
+          userData,
+          disaster,
+        },
+      }),
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+  };
 
   const addUserToDisaster = async (disasterId, userData) => {
     const disaster = await (await firestore
@@ -88,6 +116,21 @@ const RegisterDisaster = ({ history }) => {
                 ...userData,
                 id: user.id,
               });
+              notifyUser(
+                {
+                  ...userData,
+                  id: user.id,
+                },
+                {
+                  id: disaster.id,
+                  description,
+                  disasterType,
+                  coords: {
+                    ...coords,
+                    radius,
+                  },
+                }
+              );
             }
           }
         });
