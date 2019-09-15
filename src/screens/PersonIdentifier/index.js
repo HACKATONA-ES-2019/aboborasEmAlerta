@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import * as Styles from './styles';
-import { Input, Button, Icon, Radio, Row} from 'antd';
+import { Input, Button, Icon, Radio, Row, message} from 'antd';
 import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 import {firestore} from '../../lib/firebase';
@@ -50,6 +50,11 @@ export const PersonIdentifier = (props) => {
 
             await firestore.collection('/disasters').doc(disasterId).set(newValu, {merge: true})
         }
+        setCpf('')
+        setName('')
+        setValue('')
+        setDidTakePhoto(false)
+        message.success('Vítima registrada com sucesso.')
     }
 
     const radioStyle = {
