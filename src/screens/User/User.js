@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import * as Styles from './styles';
 import { Form, Icon, Input, Button, Typography } from 'antd';
 import { Row, Col } from 'antd';
 import { auth, firestore } from '../../lib/firebase';
+import queryString from 'query-string';
 
 const { Title } = Typography;
 
@@ -10,7 +12,7 @@ class User extends React.Component {
   state = {
     inDanger: true,
     uid: '',
-    disaster: '',
+    disaster: {},
     disasterId: '1TX18yVsuA6Vxs3GpjHB',
     user: {},
   };
@@ -20,18 +22,27 @@ class User extends React.Component {
   }
 
   componentDidMount() {
-    auth.onAuthStateChanged(u => {
-      if (u && u.uid) {
-        this.setState({ uid: u.uid });
-        firestore
-          .collection('users')
-          .doc(u.uid)
-          .get()
-          .then(u => {
-            this.setState({ user: u.data() });
-          });
-      }
-    });
+    const { userId, disasterId } = queryString.parse(
+      this.props.location.search
+    );
+    this.setState({ uid: userId });
+
+    firestore
+      .collection('users')
+      .doc(userId)
+      .get()
+      .then(u => {
+        this.setState({ user: u.data() });
+      });
+
+    firestore
+      .collection('disasters')
+      .doc(disasterId)
+      .get()
+      .then(d => {
+        console.log(d.data());
+        this.setState({ disaster: d.data() });
+      });
   }
 
   onClickNotAffect = () => {};
@@ -54,12 +65,30 @@ class User extends React.Component {
       .collection('/disasters')
       .doc(disasterId)
       .set(newValue, { merge: true });
-    
-    this.props.history.push('/seguro', {msg: 'A ajuda está a caminho.'})
+
+    this.props.history.push('/seguro', { msg: 'A ajuda está a caminho.' });
   };
 
-  onClickSafe = () => {
-    this.props.history.push('/seguro', {msg: 'Obrigado por nos informar.'});
+  onClickSafe = async () => {
+    let value = 'safe';
+
+    const disasterId = this.state.disasterId;
+    const disasterRef = firestore.collection('/disasters').doc(disasterId);
+    const disaster = (await disasterRef.get()).data();
+
+    const newValue = {
+      people: {
+        ...disaster.people,
+        [this.state.uid]: { ...this.state.user, situation: value },
+      },
+    };
+
+    await firestore
+      .collection('/disasters')
+      .doc(disasterId)
+      .set(newValue, { merge: true });
+
+    this.props.history.push('/seguro', { msg: 'Obrigado por nos informar.' });
   };
 
   render() {
@@ -70,7 +99,7 @@ class User extends React.Component {
             <Row style={{ backgroundColor: '#FBFBFB' }}>
               <Col span={24}>
                 <Styles.TextTitle style={{ fontSize: 30, marginTop: 20 }}>
-                  Incêndio - PUCRS
+                  {this.state.disaster.description}
                 </Styles.TextTitle>
               </Col>
 
@@ -133,4 +162,4 @@ class User extends React.Component {
   }
 }
 
-export default User;
+export default withRouter(User);
