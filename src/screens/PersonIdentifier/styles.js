@@ -7,12 +7,12 @@ export const Div = Styled.div`
     align-self: center;
     justify-content: center;
     align-items: center;
-    height: 500px;
+    height: 70vh;
     flex-direction: column;
 `;
 
 export const space = Styled.div`
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     align-self: center;
     display: flex;
     flex-direction: column;

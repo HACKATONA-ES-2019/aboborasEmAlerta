@@ -8,12 +8,12 @@ class CustomTag extends React.Component {
   state = { checked: false };
 
   handleChange = checked => {
-    this.setState({ checked });
+    this.props.handleChange(checked)
   };
 
   render() {
     return (
-      <CheckableTag {...this.props} checked={this.state.checked} onChange={this.handleChange} />
+      <CheckableTag {...this.props} checked={this.props.checked} onChange={this.handleChange} />
     );
   }
 }

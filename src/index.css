@@ -7,7 +7,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  height: 100%
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
+}
+
+
+@media only screen and (max-width: 991px) {
+  /* For mobile phones: */
+  .my-map {
+  display: none }
+  .my-list {
+
+  }
 }

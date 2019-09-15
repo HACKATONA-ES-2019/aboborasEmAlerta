@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import * as Styles from './styles';
 import { requestNotificationPermission } from '../../helpers';
-import { Form, Icon, Input, Button, Typography, Spin } from 'antd';
+import { Form, Icon, Input, Button, Typography, Spin, message } from 'antd';
 import { withUser } from '../../containers';
 import { messaging, firestore, auth } from '../../lib/firebase';
 const { Title } = Typography;
@@ -36,6 +36,7 @@ const updateUserLocalization = async (userUid, { latitude, longitude }) => {
 };
 
 const LoginScreen = ({ userData, updateUserData, history }) => {
+  const [name, setName] = useState(undefined);
   const [cpf, setCpf] = useState(undefined);
   const [password, setPassword] = useState(undefined);
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(userData).length > 0) {
+    if (userData && Object.keys(userData).length > 0) {
       history.push('/seguro');
     }
   }, [userData]);
@@ -74,7 +75,8 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
           });
       }
     } catch (error) {
-      console.log(error);
+      message.error(error.message)
+      setLoading(false)
     }
   };
 
@@ -89,7 +91,8 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
       startWatchPosition(response.user.uid);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      message.error(error.message)
+      setLoading(false)
     }
   };
 
@@ -101,6 +104,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
         {
           notificationToken: token,
           cpf: cpf,
+          name: name,
         },
         { merge: true }
       );
@@ -110,9 +114,16 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
 
   return (
     <Styles.Wrapper>
-      <Title>Entre</Title>
-      {loading && <Spin indicator={antIcon} />}
+      <Title>Cadastre-se</Title>
+
       <Form layout="vertical">
+        <Form.Item label="Nome">
+          <Input
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder="Nome"
+            onChange={event => setName(event.target.value)}
+          />
+        </Form.Item>
         <Form.Item label="CPF">
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -128,16 +139,22 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
             onChange={event => setPassword(event.target.value)}
           />
         </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={loading}
-            onClick={handleClick}
-          >
-            Entrar
-          </Button>
-        </Form.Item>
+        {loading ? (
+          <div style={{textAlign: 'center'}}><Spin indicator={antIcon} /></div>
+        ) : (
+          <Form.Item>
+            <div style={{ textAlign: 'center' }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={loading}
+                onClick={handleClick}
+              >
+                Cadastre-se
+              </Button>
+            </div>
+          </Form.Item>
+        )}
       </Form>
     </Styles.Wrapper>
   );

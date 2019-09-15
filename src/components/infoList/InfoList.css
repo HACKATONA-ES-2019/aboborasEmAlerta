@@ -12,3 +12,14 @@
     width: 100%;
     text-align: center;
 }
+
+.situations-header {
+    
+}
+
+@media only screen and (min-width: 991px) {
+    /* For mobile phones: */
+    .situations-header {
+        justify-content: center;
+    }
+  }

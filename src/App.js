@@ -33,7 +33,7 @@ class App extends React.Component {
       <Switch>
         <Route path="/" exact component={LoginScreen} />
         <Route path="/usuario" exact component={User} />
-        <Route path="/personIdentifier" exact component={PersonIdentifier} />
+        <Route path="/identificar-pessoa" exact component={PersonIdentifier} />
         <Route path="/registerDisaster" exact component={RegisterDisaster} />
         <Route path="/" exact component={LoginScreen} />
         <Route path="/seguro" exact component={SecureScreen} />

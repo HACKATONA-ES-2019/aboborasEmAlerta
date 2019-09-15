@@ -10,5 +10,11 @@ export default {
     injured: 'Ferido',
     safe: 'Fora de risco',
     death: 'Óbito'
+  },
+  colors: {
+    injured: '#FF3B30',
+    atRisk: '#FF9500',
+    death: '#000',
+    safe: '#28CD41'
   }
 }
