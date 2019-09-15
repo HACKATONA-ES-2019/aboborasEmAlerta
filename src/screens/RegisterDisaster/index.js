@@ -33,7 +33,7 @@ const RegisterDisaster = ({ history }) => {
         notification: {
           title: 'Alerta de desastre em sua área!',
           body: description,
-          click_action: `https://aboboras-em-alerta.firebaseapp.com/usuario?userId=${userData.id}&disasterId=${disaster.id}`,
+          click_action: `https://aboboras-em-alerta.firebaseapp.com/usuario/?userId=${userData.id}&disasterId=${disaster.id}`,
         },
         data: {
           userData,
