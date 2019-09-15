@@ -7,23 +7,20 @@ import * as React from 'react';
 import { firestore } from '../../lib/firebase';
 import Button from 'antd/es/button';
 import CustomTag from '../Tag';
+import Constants from '../../lib/constants'
 
 class InfoList extends React.Component {
   render() {
+      console.log(this.props.disaster)
     return (
       <InfiniteScroll pageStart={0} useWindow={false}>
         <List
           header={
             <div style={{ display: 'flex', overflowX: 'auto' }}>
-              <CustomTag>Atingidos</CustomTag>
+                {Object.entries(Constants.situations)
+                    .map(([key, value]) => <CustomTag>{value} ({this.props.disaster.situations[key]})</CustomTag>)}
+              
 
-              <CustomTag>Em risco</CustomTag>
-
-              <CustomTag>Feridos</CustomTag>
-
-              <CustomTag>Fora de risco</CustomTag>
-
-              <CustomTag>Óbitos</CustomTag>
             </div>
           }
           dataSource={this.props.disaster.peoble || []}
