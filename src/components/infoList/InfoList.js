@@ -34,6 +34,7 @@ class InfoList extends React.Component {
     return (
       <InfiniteScroll pageStart={0} useWindow={false}>
         <List
+          locale={{emptyText: 'Não foram encontradas vítimas nessa situação.'}}
           header={
             <div
               style={{

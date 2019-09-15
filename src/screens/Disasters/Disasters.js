@@ -40,6 +40,7 @@ class Disasters extends React.Component {
         />
         <div style={{ margin: 20 }}>
           <Table
+            locale={{emptyText: 'Não há desastres registrados.'}}
             onRow={(record, rowIndex) => {
               return {
                 onClick: event => {this.props.history.push('desastresInfo', {record})},
