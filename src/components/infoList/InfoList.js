@@ -31,7 +31,7 @@ class InfoList extends React.Component {
       <InfiniteScroll pageStart={0} useWindow={false}>
         <List
           header={
-            <div style={{ display: 'flex', overflowX: 'auto', justifyContent:"center", marginLeft: 10, marginRight: 10, paddingBottom:'10px' }}>
+            <div style={{ display: 'flex', overflowX: 'auto', marginLeft: 10, marginRight: 10, paddingBottom:'10px' }} className="situations-header">
               {Object.entries(Constants.situations).map(([key, value]) => (
                 <CustomTag style={{fontSize: 14, marginLeft:'1vh', marginRight:'1vh'}} checked={this.state.tags[key]} handleChange={(checked) => this.onChangeTag(key, checked)}>
                   {value} ({this.props.disaster.situations[key]})
