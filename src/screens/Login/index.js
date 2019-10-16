@@ -83,7 +83,7 @@ const LoginScreen = ({ userData, updateUserData, history }) => {
   const registerUser = async token => {
     try {
       const response = await auth.createUserWithEmailAndPassword(
-        `${cpf}@aboborasemalerta.com`,
+        `${cpf.trim()}@aboborasemalerta.com`,
         'password@123'
       );
       updateNotificationToken(response.user.uid, token);
