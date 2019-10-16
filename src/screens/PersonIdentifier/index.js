@@ -37,7 +37,7 @@ export const PersonIdentifier = props => {
       ...value,
       id: key,
     }));
-    const person = people.find(p => p.cpf === cpf);
+    const person = people.find(p => p.name === name);
     if (person) {
       const newValue = {
         people: {
@@ -52,7 +52,7 @@ export const PersonIdentifier = props => {
         .set(newValue, { merge: true });
     } else {
       const newValu = {
-        people: { ...disaster.people, [cpf]: { cpf, situation: value, name } },
+        people: { ...disaster.people, [name]: { cpf, situation: value, name } },
       };
 
       await firestore
@@ -103,38 +103,6 @@ export const PersonIdentifier = props => {
               placeholder="Digite aqui..."
               value={name}
             />
-          </Styles.space>
-
-          <Styles.space>
-            <h3>CPF</h3>
-            <Input
-              onChange={e => setCpf(e.target.value)}
-              placeholder="Digite aqui..."
-              value={cpf}
-            />
-          </Styles.space>
-
-          <Styles.space>
-            {didTakePhoto ? (
-              <Button
-                onClick={() => setShowCamera(true)}
-                style={{ width: 200, height: 70 }}
-                style={{ borderColor: 'green' }}
-                type="default"
-                icon="check-circle"
-              >
-                Reconhecimento Facial
-              </Button>
-            ) : (
-              <Button
-                onClick={() => setShowCamera(true)}
-                style={{ width: 200, height: 70 }}
-                type="default"
-                icon="camera"
-              >
-                Reconhecimento Facial
-              </Button>
-            )}
           </Styles.space>
 
           <Styles.space>
