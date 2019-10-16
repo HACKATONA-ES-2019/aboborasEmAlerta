@@ -7,6 +7,8 @@ import SecureScreen from './screens/Secure';
 import DisasterScreen from './screens/Disasters/Disasters';
 import { NotFoundScreen } from './screens/NotFound';
 import DisasterInfo from "./screens/DisastersInfo/DisasterInfo";
+import User from "./screens/User/User";
+
 
 import  RegisterDisaster  from './screens/RegisterDisaster';
 import {connect} from 'react-redux';
@@ -30,7 +32,8 @@ class App extends React.Component {
     return (
       <Switch>
         <Route path="/" exact component={LoginScreen} />
-        <Route path="/personIdentifier" exact component={PersonIdentifier} />
+        <Route path="/usuario" exact component={User} />
+        <Route path="/identificar-pessoa" exact component={PersonIdentifier} />
         <Route path="/registerDisaster" exact component={RegisterDisaster} />
         <Route path="/" exact component={LoginScreen} />
         <Route path="/seguro" exact component={SecureScreen} />

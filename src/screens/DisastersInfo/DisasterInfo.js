@@ -6,36 +6,43 @@ import InfoList from '../../components/infoList/InfoList';
 import Header from '../../components/Header';
 import Constants from '../../lib/constants';
 import { firestore } from '../../lib/firebase';
-
+import GoogleMaps from '../../components/MapInfo';
 
 const { Title } = Typography;
 
-const mountDisaster = (disaster) => {
-  const situations = Object.keys(Constants.situations).reduce((acc, curr) => ({...acc, [curr]: 0}), {})
-  const peoble = disaster.peoble || []
-  peoble.forEach(p => {
-      situations[p.situation] = situations[p.situation] + 1
-  })
-  return {...disaster, situations}
-}
+const mountDisaster = disaster => {
+  const situations = Object.keys(Constants.situations).reduce(
+    (acc, curr) => ({ ...acc, [curr]: 0 }),
+    {}
+  );
+  const people = disaster.people || {};
+  const peopleList = []
+  Object.entries(people).forEach(([key, p]) => {
+    peopleList.push({...p, id: key})
+    situations[p.situation] = situations[p.situation] + 1;
+  });
+  console.log(peopleList)
+  return { ...disaster, situations: { ...situations, hit: peopleList.length }, people: peopleList };
+};
 class DisasterInfo extends React.Component {
   state = {
     disaster: mountDisaster(this.props.location.state.record),
   };
   componentDidMount() {
+    console.log(this.props)
     firestore
       .collection('disasters')
       .doc(this.props.location.state.record.id)
       .onSnapshot(doc => {
-        this.setState({ disaster: mountDisaster(doc.data()) });
+        this.setState({ disaster: mountDisaster({...doc.data(), id: doc.id}) });
       });
   }
 
-  
-
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+    <Styles.outerDiv>
+      <Row>
+        <Col lg={12} sm={24}>
         <Header
           title={
             Constants.disasterTypes[this.props.location.state.record.category]
@@ -43,7 +50,22 @@ class DisasterInfo extends React.Component {
           onBack={() => this.props.history.push('/desastres')}
         />
         <InfoList disaster={this.state.disaster} />
-      </div>
+        <div style={{display: 'flex', flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginTop: 10}}>
+          <Button type="primary" style={{height: "5vh"}} 
+           onClick={() => this.props.history.push('/identificar-pessoa', {
+            disaster: this.state.disaster,
+          })}
+          >Identificar pessoa</Button>
+        </div>
+        </Col>
+        <div className="my-map">
+          <Col span={12}>
+          <GoogleMaps style={{height: '100vh', width: '100%'}} initialCenter={{lat: this.props.location.state.record.coords.latitude, lng: this.props.location.state.record.coords.longitude}}></GoogleMaps>
+          </Col>
+        </div>
+        
+      </Row>
+    </Styles.outerDiv> 
     );
   }
 }

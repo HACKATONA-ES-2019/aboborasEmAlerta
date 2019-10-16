@@ -5,10 +5,16 @@ export default {
     landslide: 'Dasabamento'
   },
   situations: {
-    hits: 'Atingidos',
+    hit: 'Atingido',
     atRisk: 'Em risco',
-    injured: 'Feridos',
+    injured: 'Ferido',
     safe: 'Fora de risco',
-    deaths: 'Óbitos'
+    death: 'Óbito'
+  },
+  colors: {
+    injured: '#FF3B30',
+    atRisk: '#FF9500',
+    death: '#000',
+    safe: '#28CD41'
   }
 }

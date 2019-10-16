@@ -10,7 +10,7 @@ const columns = [
   {
     title: 'Data',
     dataIndex: 'creationDate',
-    render: v => (v ? dayjs(v.toDate()).format('DD-MM-YYYY HH:mm:ss') : null),
+    render: v => (v ? dayjs(v.toDate()).format('DD/MM/YYYY HH:mm:ss') : null),
   },
   {
     title: 'Categoria',
@@ -40,6 +40,7 @@ class Disasters extends React.Component {
         />
         <div style={{ margin: 20 }}>
           <Table
+            locale={{emptyText: 'Não há desastres registrados.'}}
             onRow={(record, rowIndex) => {
               return {
                 onClick: event => {this.props.history.push('desastresInfo', {record})},
@@ -48,7 +49,6 @@ class Disasters extends React.Component {
             dataSource={this.props.disasters}
             columns={columns}
           />
-          ;
         </div>
       </div>
     );
